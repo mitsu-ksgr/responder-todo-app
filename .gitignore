@@ -1,0 +1,7 @@
+*.log
+
+# python
+*.pot
+*.pyc
+__pycache__/
+
