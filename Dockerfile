@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-#RUN pip3 install Flask
 RUN pip3 install pipenv
 
 # Create the application directory
