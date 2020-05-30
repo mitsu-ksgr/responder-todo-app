@@ -11,8 +11,8 @@ api = responder.API(
 
 
 @api.route("/")
-def hello_world(req, resp):
-    resp.text = "Hello, Responder!"
+def root_path(req, resp):
+    resp.html = api.template('index.html')
 
 @api.route("/hello/{who}")
 def hello_to(req, resp, *, who):
