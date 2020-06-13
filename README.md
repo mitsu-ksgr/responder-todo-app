@@ -38,9 +38,9 @@ $ docker-compose exec web pipenv run alembic -h
   - [Tutorial — Alembic 1\.4\.2 documentation](https://alembic.sqlalchemy.org/en/latest/tutorial.html)
 
 ```sh
-# db_migrations ディレクトリを migration ディレクトリとして初期化
-# - "db_migrations" の部分は任意
-$ docker-compose exec web pipenv run alembic init db_migrations
+# db ディレクトリを migration ディレクトリとして初期化
+# - "db" の部分は任意
+$ docker-compose exec web pipenv run alembic init db
 ```
 
 - alembic.ini ... 設定ファイル
