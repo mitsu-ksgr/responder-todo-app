@@ -2,11 +2,11 @@ version: '3'
 services:
   db:
     container_name: db
-    image: mysql:8.0
+    image: mysql:5.7
     volumes:
       - ./tmp/db_data:/var/lib/postgresql/data:cached
     ports:
-      - '54320:5432'
+      - '33061:3306'
     environment:
       MYSQL_DATABASE: app
       MYSQL_ROOT_PASSWORD: root_password

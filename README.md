@@ -1,6 +1,25 @@
 Responder app
 =============
 
+### Setup
+
+```sh
+# Run
+$ docker-compose up -d
+
+# Setup db
+$ docker-compose exec web pipenv run alembic upgrade head
+```
+
+### MySQL Connection Info (for dev)
+- Database Type: `MySQL`
+- Host: `localhost`
+- Port: `33061`
+- Database Name: `app`
+- User Name: `dev_user`
+- Password: `password`
+
+
 ### MySQL
 - sqlalchemy ... The Database Toolkit for Python
   - https://pypi.org/project/SQLAlchemy/
@@ -29,6 +48,12 @@ $ docker run --rm web pipenv install mysql-connector-python
 #### Alembic
 ```sh
 $ docker-compose exec web pipenv run alembic -h
+
+# Create migration file
+$ docker-compose exec web pipenv run alembic revision -m "create users table"
+
+# Running migrations
+$ docker-compose exec web pipenv run alembic upgrade head
 ```
 
 
