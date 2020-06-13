@@ -54,6 +54,9 @@ $ docker-compose exec web pipenv run alembic revision -m "create users table"
 
 # Running migrations
 $ docker-compose exec web pipenv run alembic upgrade head
+
+# Downgrades: downgrade just 1 step.
+$ docker-compose exec web pipenv run alembic downgrade -1
 ```
 
 
