@@ -1,6 +1,19 @@
 version: '3'
 services:
-  app:
+  db:
+    container_name: db
+    image: mysql:8.0
+    volumes:
+      - ./tmp/db_data:/var/lib/postgresql/data:cached
+    ports:
+      - '54320:5432'
+    environment:
+      MYSQL_DATABASE: app
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: dev_user
+      MYSQL_PASSWORD: password
+
+  web:
     container_name: web
     build:
       context: .
@@ -9,5 +22,7 @@ services:
       - ./:/app
     ports:
       - '8080:80'
+    depends_on:
+      - db
     command: uvicorn app.main:api --host "0.0.0.0" --port 80 --reload
 

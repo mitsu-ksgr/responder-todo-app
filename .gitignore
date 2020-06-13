@@ -5,3 +5,7 @@
 *.pyc
 __pycache__/
 
+
+# project
+tmp/
+
