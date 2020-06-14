@@ -17,6 +17,7 @@ class User(declarative_base()):
     )
     name = Column(String(50))
     profile = Column(String(200, convert_unicode=True))
+    location = Column(String(128, convert_unicode=True))
     created_at = Column(
         DateTime,
         default=datetime.now(),
@@ -31,7 +32,7 @@ class User(declarative_base()):
     )
 
     def __repr__(self):
-        return "<User(id={}, name='{}', created_at='{}', updated_at='{}')>"\
-                .format(self.id, self.name, self.created_at, self.updated_at)
+        return "<User(id={}, name='{}', location={}, created_at='{}', updated_at='{}')>"\
+                .format(self.id, self.name, self.location, self.created_at, self.updated_at)
 
 
