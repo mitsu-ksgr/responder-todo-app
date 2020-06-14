@@ -46,6 +46,64 @@ def user_add(req, resp):
     session.commit()
     resp.text = "User Add: {}".format(user)
 
+@api.route("/user/{idx}/update")
+def user_update(req, resp, *, idx):
+    import sqlalchemy
+    import sqlalchemy.orm
+    url = 'mysql+mysqlconnector://dev_user:password@db:3306/app'
+    engine = sqlalchemy.create_engine(url, echo=False)
+
+    # make session
+    Session = sqlalchemy.orm.sessionmaker(bind=engine)
+    session = Session()
+
+    from app.models import users
+
+    if idx == None:
+        resp.text = "ERROR: you must specify id"
+        session.close()
+        return
+    else:
+        idx = int(idx)
+
+    user = session.query(users.User).get(idx)
+    if user == None:
+        resp.text = f"User not found ({idx})."
+    else:
+        user.name = req.params.get('name', user.name)
+        user.profile = req.params.get('profile', user.profile)
+        user.location = req.params.get('location', user.location)
+        session.commit()
+        resp.text = f"User Update: {user}"
+
+@api.route("/user/{idx}/delete")
+def user_delete(req, resp, *, idx):
+    import sqlalchemy
+    import sqlalchemy.orm
+    url = 'mysql+mysqlconnector://dev_user:password@db:3306/app'
+    engine = sqlalchemy.create_engine(url, echo=False)
+
+    # make session
+    Session = sqlalchemy.orm.sessionmaker(bind=engine)
+    session = Session()
+
+    from app.models import users
+
+    if idx == None:
+        resp.text = "ERROR: you must specify id"
+        session.close()
+        return
+    else:
+        idx = int(idx)
+
+    user = session.query(users.User).get(idx)
+    if user == None:
+        resp.text = f"User not found ({idx})."
+    else:
+        session.delete(user)
+        session.commit()
+        resp.text = f"User Deleted: {idx}"
+
 @api.route("/users")
 def user_list(req, resp):
     import sqlalchemy
