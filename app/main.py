@@ -3,12 +3,24 @@
 #
 # see: https://responder.kennethreitz.org/en/latest/quickstart.html
 #
+
 import responder
+import sqlalchemy
+import sqlalchemy.orm
+
+from config import app_config
+from app.models import users
+
+def get_db_session():
+    url = app_config.get('db', 'url')
+    engine = sqlalchemy.create_engine(url, echo=False)
+
+    Session = sqlalchemy.orm.sessionmaker(bind=engine)
+    return Session()
 
 api = responder.API(
     templates_dir = "app/templates"
 )
-
 
 @api.route("/")
 def root_path(req, resp):
@@ -22,21 +34,23 @@ def hello_to(req, resp, *, who):
 def hello_html(req, resp, *, who):
     resp.html = api.template('hello.html', who=who)
 
+@api.route("/db_info")
+def db_info(req, resp):
+    txt = ""
+    txt += f"Dialect: {app_config.get('db', 'dialect')}\n"
+    txt += f"Driver: {app_config.get('db', 'driver')}\n"
+    txt += f"Host: {app_config.get('db', 'host')}\n"
+    txt += f"Port: {app_config.get('db', 'port')}\n"
+    txt += f"User Name: {app_config.get('db', 'username')}\n"
+    txt += f"URL: {app_config.get('db', 'url')}\n"
+    resp.text = txt
+
 #
 # DB connection test
 #
 @api.route("/users/new")
 def user_add(req, resp):
-    import sqlalchemy
-    import sqlalchemy.orm
-    url = 'mysql+mysqlconnector://dev_user:password@db:3306/app'
-    engine = sqlalchemy.create_engine(url, echo=False)
-
-    # make session
-    Session = sqlalchemy.orm.sessionmaker(bind=engine)
-    session = Session()
-
-    from app.models import users
+    session = get_db_session()
 
     name = req.params.get('name', 'test-user')
     profile = req.params.get('profile', 'profile text')
@@ -48,24 +62,13 @@ def user_add(req, resp):
 
 @api.route("/user/{idx}/update")
 def user_update(req, resp, *, idx):
-    import sqlalchemy
-    import sqlalchemy.orm
-    url = 'mysql+mysqlconnector://dev_user:password@db:3306/app'
-    engine = sqlalchemy.create_engine(url, echo=False)
-
-    # make session
-    Session = sqlalchemy.orm.sessionmaker(bind=engine)
-    session = Session()
-
-    from app.models import users
-
     if idx == None:
         resp.text = "ERROR: you must specify id"
-        session.close()
         return
     else:
         idx = int(idx)
 
+    session = get_db_session()
     user = session.query(users.User).get(idx)
     if user == None:
         resp.text = f"User not found ({idx})."
@@ -78,24 +81,13 @@ def user_update(req, resp, *, idx):
 
 @api.route("/user/{idx}/delete")
 def user_delete(req, resp, *, idx):
-    import sqlalchemy
-    import sqlalchemy.orm
-    url = 'mysql+mysqlconnector://dev_user:password@db:3306/app'
-    engine = sqlalchemy.create_engine(url, echo=False)
-
-    # make session
-    Session = sqlalchemy.orm.sessionmaker(bind=engine)
-    session = Session()
-
-    from app.models import users
-
     if idx == None:
         resp.text = "ERROR: you must specify id"
-        session.close()
         return
     else:
         idx = int(idx)
 
+    session = get_db_session()
     user = session.query(users.User).get(idx)
     if user == None:
         resp.text = f"User not found ({idx})."
@@ -106,17 +98,7 @@ def user_delete(req, resp, *, idx):
 
 @api.route("/users")
 def user_list(req, resp):
-    import sqlalchemy
-    import sqlalchemy.orm
-    url = 'mysql+mysqlconnector://dev_user:password@db:3306/app'
-    engine = sqlalchemy.create_engine(url, echo=False)
-
-    # make session
-    Session = sqlalchemy.orm.sessionmaker(bind=engine)
-    session = Session()
-
-    from app.models import users
-
+    session = get_db_session()
     text = ""
     for user in session.query(users.User).all():
         text += f"{user}\n"
