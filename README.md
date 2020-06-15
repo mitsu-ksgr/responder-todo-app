@@ -1,5 +1,7 @@
-Responder app
-=============
+Responder TODO app
+==================
+
+Responder を使って TODO アプリを作ってみる.
 
 ### Setup
 
@@ -39,6 +41,9 @@ $ docker-compose exec web pipenv run alembic upgrade head
 
 ### Commands
 ```sh
+# Show logs
+$ docker-compose logs -f
+
 # Install a package
 $ docker-compose run --rm web pipenv install mysql-connector-python
 or
