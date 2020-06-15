@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Responder Test</title>
+</head>
+<body>
+  <h1>Users</h1>
+
+  <div>
+    <h3>Users ({{ users | count }})</h3>
+
+    {% if users|length > 0 %}
+      <ul>
+        {% for user in users %}
+        <li>{{ user.id }}:  {{ user.name }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>no user yet</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <h3>Register new user</h3>
+
+    {% if messages|length > 0 %}
+      <ul>
+        {% for msg in messages %}
+        <li>{{ msg }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <form action="/users" method="post">
+      <p>Name: <input type="text" name="name"></p>
+      <p>
+        Profile:<br>
+        <textarea name="profile" rows="4" cols="25"></textarea>
+      </p>
+      <p><input type="submit" value="Add"></p>
+    </form>
+  </div>
+</body>
+</html>
