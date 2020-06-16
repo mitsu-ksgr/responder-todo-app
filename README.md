@@ -46,6 +46,7 @@ $ docker-compose logs -f
 
 # Install a package
 $ docker-compose run --rm web pipenv install mysql-connector-python
+$ docker-compose run --rm web pipenv install --dev black
 or
 $ docker run --rm web pipenv install mysql-connector-python
 ```
