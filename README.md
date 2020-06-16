@@ -65,6 +65,11 @@ $ docker-compose exec web pipenv run alembic upgrade head
 $ docker-compose exec web pipenv run alembic downgrade -1
 ```
 
+#### Linter
+```sh
+$ docker-compose exec web pipenv run flake8 app/*.py app/*/*.py
+```
+
 #### Code formatting
 ```sh
 $ docker-compose exec web pipenv run black app/*.py app/*/*.py
