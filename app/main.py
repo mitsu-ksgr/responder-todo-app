@@ -21,14 +21,6 @@ api = responder.API(
 def root_path(req, resp):
     resp.html = api.template('index.html')
 
-@api.route("/hello/{who}")
-def hello_to(req, resp, *, who):
-    resp.text = f"Hello, {who}! how are you?"
-
-@api.route("/hello/{who}/html")
-def hello_html(req, resp, *, who):
-    resp.html = api.template('hello.html', who=who)
-
 @api.route("/db_info")
 def db_info(req, resp):
     txt = ""
