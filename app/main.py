@@ -5,13 +5,9 @@
 #
 
 import responder
-import sqlalchemy
-import sqlalchemy.orm
 
+from app.controllers.users_controller import UsersController, UserController
 from config import app_config
-from app.models.user import User
-
-import app.db_helper
 
 api = responder.API(templates_dir="app/templates")
 
@@ -32,8 +28,6 @@ def db_info(req, resp):
     txt += f"URL: {app_config.get('db', 'url')}\n"
     resp.text = txt
 
-
-from app.controllers.users_controller import UsersController, UserController
 
 api.add_route("/users", UsersController)
 api.add_route("/user/{idx}", UserController)

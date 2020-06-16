@@ -21,7 +21,7 @@ class UsersController:
         params = await req.media()
 
         # TODO add validation
-        if not "name" in params:
+        if "name" not in params:
             users = session.query(User).all()
             resp.html = render_template(
                 "users/index.html", users=users, messages=["Name can't be blank"]
@@ -46,7 +46,7 @@ class UsersController:
 # /user/{idx}
 class UserController:
     async def on_get(self, req, resp, *, idx):
-        if idx == None:
+        if idx is None:
             redirect_to(resp, "/users")
             return
         else:
@@ -57,7 +57,7 @@ class UserController:
         resp.html = render_template("users/show.html", user=user)
 
     async def on_post(self, req, resp, *, idx):
-        if idx == None:
+        if idx is None:
             redirect_to(resp, "/users")
             return
         else:
