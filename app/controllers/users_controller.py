@@ -1,4 +1,3 @@
-
 from sqlalchemy.exc import SQLAlchemyError
 
 import app.db_helper
@@ -14,7 +13,7 @@ class UsersController:
     async def on_get(self, req, resp):
         session = app.db_helper.session()
         users = session.query(User).all()
-        resp.html = render_template('users/index.html', users=users)
+        resp.html = render_template("users/index.html", users=users)
 
     # Add new user
     async def on_post(self, req, resp):
@@ -22,16 +21,15 @@ class UsersController:
         params = await req.media()
 
         # TODO add validation
-        if not 'name' in params:
+        if not "name" in params:
             users = session.query(User).all()
-            resp.html = render_template('users/index.html',
-                users=users, messages=["Name can't be blank"])
+            resp.html = render_template(
+                "users/index.html", users=users, messages=["Name can't be blank"]
+            )
             return
 
         try:
-            user = User(
-                name = params["name"],
-                profile = params.get('profile', ''))
+            user = User(name=params["name"], profile=params.get("profile", ""))
             session.add(user)
             session.commit()
         except SQLAlchemyError as e:
@@ -42,34 +40,35 @@ class UsersController:
             session.rollback()
         finally:
             session.close()
-        redirect_to(resp, '/users')
+        redirect_to(resp, "/users")
+
 
 # /user/{idx}
 class UserController:
     async def on_get(self, req, resp, *, idx):
         if idx == None:
-            redirect_to(resp, '/users')
+            redirect_to(resp, "/users")
             return
         else:
             idx = int(idx)
 
         session = app.db_helper.session()
         user = session.query(User).get(idx)
-        resp.html = render_template('users/show.html', user=user)
+        resp.html = render_template("users/show.html", user=user)
 
     async def on_post(self, req, resp, *, idx):
         if idx == None:
-            redirect_to(resp, '/users')
+            redirect_to(resp, "/users")
             return
         else:
             idx = int(idx)
 
         params = await req.media()
-        if '_method' in params:
-            if params['_method'] == 'patch':
+        if "_method" in params:
+            if params["_method"] == "patch":
                 self.on_patch(req, resp, idx, params)
                 return
-            elif params['_method'] == 'delete':
+            elif params["_method"] == "delete":
                 self.on_delete(req, resp, idx)
                 return
 
@@ -83,13 +82,13 @@ class UserController:
         user = session.query(User).get(idx)
         if not user:
             # Note: users/show.html allows none user
-            resp.html = render_template('users/show.html', user=user)
+            resp.html = render_template("users/show.html", user=user)
             session.close()
             return
 
-        user.name = params.get('name', user.name)
-        user.profile = params.get('profile', user.profile)
-        user.location = params.get('location', user.location)
+        user.name = params.get("name", user.name)
+        user.profile = params.get("profile", user.profile)
+        user.location = params.get("location", user.location)
         try:
             session.commit()
         except SQLAlchemyError as e:
@@ -98,28 +97,27 @@ class UserController:
         except Exception as e:
             print(e)
             session.rollback()
-        resp.html = render_template('users/show.html', user=user)
+        resp.html = render_template("users/show.html", user=user)
         session.close()
 
     def on_delete(self, req, resp, idx):
         session = app.db_helper.session()
         user = session.query(User).get(idx)
         if not user:
-            redirect_to(resp, '/users')
+            redirect_to(resp, "/users")
             session.close()
             return
         try:
             session.delete(user)
             session.commit()
-            redirect_to(resp, '/users')
+            redirect_to(resp, "/users")
         except SQLAlchemyError as e:
             print(e)
             session.rollback()
-            resp.html = render_template('users/show.html', user=user)
+            resp.html = render_template("users/show.html", user=user)
         except Exception as e:
             print(e)
             session.rollback()
-            resp.html = render_template('users/show.html', user=user)
+            resp.html = render_template("users/show.html", user=user)
         finally:
             session.close()
-
