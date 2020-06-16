@@ -29,7 +29,11 @@ class UsersController:
             return
 
         try:
-            user = User(name=params["name"], profile=params.get("profile", ""))
+            user = User(
+                name=params["name"],
+                location=params.get("location", ""),
+                profile=params.get("profile", ""),
+            )
             session.add(user)
             session.commit()
         except SQLAlchemyError as e:
