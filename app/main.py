@@ -13,13 +13,13 @@ from app.models.user import User
 
 import app.db_helper
 
-api = responder.API(
-    templates_dir = "app/templates"
-)
+api = responder.API(templates_dir="app/templates")
+
 
 @api.route("/")
 def root_path(req, resp):
-    resp.html = api.template('index.html')
+    resp.html = api.template("index.html")
+
 
 @api.route("/db_info")
 def db_info(req, resp):
@@ -32,10 +32,11 @@ def db_info(req, resp):
     txt += f"URL: {app_config.get('db', 'url')}\n"
     resp.text = txt
 
+
 from app.controllers.users_controller import UsersController, UserController
+
 api.add_route("/users", UsersController)
 api.add_route("/user/{idx}", UserController)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     api.run()
-
