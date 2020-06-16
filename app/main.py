@@ -13,10 +13,6 @@ from app.models.user import User
 
 import app.db_helper
 
-# deprecated
-def get_db_session():
-    return app.db_helper.session()
-
 api = responder.API(
     templates_dir = "app/templates"
 )
@@ -44,47 +40,9 @@ def db_info(req, resp):
     txt += f"URL: {app_config.get('db', 'url')}\n"
     resp.text = txt
 
-#
-# DB connection test
-#
-@api.route("/user/{idx}/update")
-def user_update(req, resp, *, idx):
-    if idx == None:
-        resp.text = "ERROR: you must specify id"
-        return
-    else:
-        idx = int(idx)
-
-    session = get_db_session()
-    user = session.query(User).get(idx)
-    if user == None:
-        resp.text = f"User not found ({idx})."
-    else:
-        user.name = req.params.get('name', user.name)
-        user.profile = req.params.get('profile', user.profile)
-        user.location = req.params.get('location', user.location)
-        session.commit()
-        resp.text = f"User Update: {user}"
-
-@api.route("/user/{idx}/delete")
-def user_delete(req, resp, *, idx):
-    if idx == None:
-        resp.text = "ERROR: you must specify id"
-        return
-    else:
-        idx = int(idx)
-
-    session = get_db_session()
-    user = session.query(User).get(idx)
-    if user == None:
-        resp.text = f"User not found ({idx})."
-    else:
-        session.delete(user)
-        session.commit()
-        resp.text = f"User Deleted: {idx}"
-
-from app.controllers.users_controller import UsersController
+from app.controllers.users_controller import UsersController, UserController
 api.add_route("/users", UsersController)
+api.add_route("/user/{idx}", UserController)
 
 if __name__ == '__main__':
     api.run()

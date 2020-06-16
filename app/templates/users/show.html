@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Responder Test</title>
+</head>
+<body>
+  <h1>User Profile</h1>
+
+  {% if user is none %}
+    <div><p>user not found</p></div>
+  {% else %}
+    <div>
+      <table>
+        <tr><td>ID</td><td>{{ user.id }}</td></tr>
+        <tr><td>Name</td><td>{{ user.name }}</td></tr>
+        <tr><td>Location</td><td>{{ user.location }}</td></tr>
+      </table>
+      <div>
+        <p>{{ user.profile }}</p>
+      </div>
+    </div>
+
+    <div>
+      <h3>Update Profile</h3>
+      {% if messages|length > 0 %}
+        <ul>
+          {% for msg in messages %}
+          <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <form action="/user/{{user.id}}" method="post">
+        <input type="hidden" name="_method" value="patch">
+
+        <p>Name: <input type="text" name="name" value="{{ user.name }}"></p>
+        <p>Location: <input type="text" name="location" value="{{ user.location }}"></p>
+        <p>
+          Profile:<br>
+          <textarea name="profile" rows="4" cols="25" value="{{ user.profile }}"></textarea>
+        </p>
+        <p><input type="submit" value="Update"></p>
+      </form>
+      <form action="/user/{{user.id}}" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <p><input type="submit" value="Delete User"></p>
+      </form>
+    </div>
+  {% endif %}
+
+</body>
+</html>
