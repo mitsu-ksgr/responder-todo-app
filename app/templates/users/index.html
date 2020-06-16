@@ -13,7 +13,9 @@
     {% if users|length > 0 %}
       <ul>
         {% for user in users %}
-        <li>{{ user.id }}:  {{ user.name }}</li>
+        <li>
+          <a href="/user/{{user.id}}">{{ user.id }}:  {{ user.name }}</a>
+        </li>
         {% endfor %}
       </ul>
     {% else %}
@@ -41,5 +43,11 @@
       <p><input type="submit" value="Add"></p>
     </form>
   </div>
+
+  <footer>
+    <nav>
+      <a href="/">top</a>
+    </nav>
+  </footer>
 </body>
 </html>
