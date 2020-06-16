@@ -65,6 +65,10 @@ $ docker-compose exec web pipenv run alembic upgrade head
 $ docker-compose exec web pipenv run alembic downgrade -1
 ```
 
+#### Code formatting
+```sh
+$ docker-compose exec web pipenv run black app/*.py app/*/*.py
+```
 
 ### Notes
 #### Alembic
