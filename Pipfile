@@ -12,6 +12,7 @@ responder = "*"
 sqlalchemy = "*"
 mysql-connector-python = "*"
 alembic = "*"
+bcrypt = "*"
 
 [requires]
 python_version = "3.8"
