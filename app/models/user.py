@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, String, DateTime, Text
 from sqlalchemy.dialects.mysql import INTEGER
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.functions import current_timestamp
@@ -12,9 +12,11 @@ class User(declarative_base()):
     __tablename__ = "users"
 
     id = Column(INTEGER(unsigned=True), primary_key=True, autoincrement=True)
-    name = Column(String(50))
-    profile = Column(String(200, convert_unicode=True))
-    location = Column(String(128, convert_unicode=True))
+    email = Column(String(255))
+    encrypted_password = Column(String(255))
+    name = Column(String(255), convert_unicode=True)
+    location = Column(String(255, convert_unicode=True))
+    profile = Column(Text)
     created_at = Column(
         DateTime,
         default=datetime.now(),
