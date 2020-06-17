@@ -1,8 +1,10 @@
+import bcrypt
 from sqlalchemy.exc import SQLAlchemyError
 
 import app.db_helper
 from app.api_helper import redirect_to, render_template
 from app.models.user import User
+from app.validators.user_validator import UserValidator
 
 
 # TODO: error handling
@@ -20,16 +22,21 @@ class UsersController:
         session = app.db_helper.session()
         params = await req.media()
 
-        # TODO add validation
-        if "name" not in params:
+        # TODO: check email uniqueness
+        validator = UserValidator(params)
+        if not validator.is_valid:
             users = session.query(User).all()
             resp.html = render_template(
-                "users/index.html", users=users, messages=["Name can't be blank"]
+                "users/index.html", users=users, messages=validator.messages
             )
             return
 
         try:
+            row_pass = params["password"]
+            enc_pass = bcrypt.hashpw(row_pass.encode('utf-8'), bcrypt.gensalt())
             user = User(
+                email=params["email"],
+                encrypted_password=enc_pass,
                 name=params["name"],
                 location=params.get("location", ""),
                 profile=params.get("profile", ""),
