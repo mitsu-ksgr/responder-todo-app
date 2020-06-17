@@ -23,8 +23,8 @@ class UsersController:
         params = await req.media()
 
         # TODO: check email uniqueness
-        validator = UserValidator(params)
-        if not validator.is_valid:
+        validator = UserValidator("create", params)
+        if not validator.valid:
             users = session.query(User).all()
             resp.html = render_template(
                 "users/index.html", users=users, messages=validator.messages
@@ -97,9 +97,23 @@ class UserController:
             session.close()
             return
 
+        # TODO: check email uniqueness
+        validator = UserValidator("update", params)
+        if not validator.valid:
+            resp.html = render_template(
+                "users/show.html", user=user, messages=validator.messages
+            )
+            return
+
+        user.email = params.get("email", user.email)
         user.name = params.get("name", user.name)
         user.profile = params.get("profile", user.profile)
         user.location = params.get("location", user.location)
+        if "password" in params:
+            row_pass = params["password"]
+            enc_pass = bcrypt.hashpw(row_pass.encode('utf-8'), bcrypt.gensalt())
+            user.encrypted_password = enc_pass
+
         try:
             session.commit()
         except SQLAlchemyError as e:
