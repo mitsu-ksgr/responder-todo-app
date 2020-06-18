@@ -33,7 +33,7 @@ class UsersController:
 
         try:
             row_pass = params["password"]
-            enc_pass = bcrypt.hashpw(row_pass.encode('utf-8'), bcrypt.gensalt())
+            enc_pass = bcrypt.hashpw(row_pass.encode("utf-8"), bcrypt.gensalt())
             user = User(
                 email=params["email"],
                 encrypted_password=enc_pass,
@@ -111,7 +111,7 @@ class UserController:
         user.location = params.get("location", user.location)
         if "password" in params:
             row_pass = params["password"]
-            enc_pass = bcrypt.hashpw(row_pass.encode('utf-8'), bcrypt.gensalt())
+            enc_pass = bcrypt.hashpw(row_pass.encode("utf-8"), bcrypt.gensalt())
             user.encrypted_password = enc_pass
 
         try:

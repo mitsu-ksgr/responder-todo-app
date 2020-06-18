@@ -18,6 +18,7 @@ class LogoutController:
         resp.session.pop("user_id")
         redirect_to(resp, "/")
 
+
 class LoginController:
     async def on_get(self, req, resp):
         resp.html = render_template("sessions/new.html")
@@ -49,13 +50,11 @@ class LoginController:
 
     def _authenticate(self, email, row_password):
         session = app.db_helper.session()
-        user = session.query(User).filter(User.email==email).first()
+        user = session.query(User).filter(User.email == email).first()
         if user:
             check = bcrypt.checkpw(
-                row_password.encode("utf-8"),
-                user.encrypted_password.encode("utf-8")
+                row_password.encode("utf-8"), user.encrypted_password.encode("utf-8")
             )
             if check:
                 return True, user
         return False, None
-

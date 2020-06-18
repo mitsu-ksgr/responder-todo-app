@@ -1,15 +1,15 @@
 # TODO: validate email format
 class UserValidator:
-    def __init__(self, context = None, params = {}):
+    def __init__(self, context=None, params={}):
         self.valid = None
         self.messages = []
         if context:
             self.is_valid(context, params)
 
     def is_valid(self, context, params):
-        if context == 'create':
+        if context == "create":
             self._validate_create_params(params)
-        elif context == 'update':
+        elif context == "update":
             self._validate_update_params(params)
         return self.valid
 
@@ -35,4 +35,3 @@ class UserValidator:
         if "password" in params and len(params["password"]) < 6:
             self.messages.append("Password must be at least 6 characters")
         self.valid = len(self.messages) == 0
-
