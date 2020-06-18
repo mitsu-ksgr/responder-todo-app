@@ -8,10 +8,7 @@ from app.models.user import User
 class LogoutController:
     async def on_get(self, req, resp):
         resp.session.pop("user_id")
-
-
-
-        redirect_to(resp, '/')
+        redirect_to(resp, "/")
 
 
 class LoginController:
