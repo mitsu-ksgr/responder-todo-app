@@ -1,6 +1,8 @@
 Responder TODO app
 ==================
 
+![Python application](https://github.com/mitsu-ksgr/responder-todo-app/workflows/Python%20application/badge.svg)
+
 Responder を使って TODO アプリを作ってみる.
 
 ### Setup
