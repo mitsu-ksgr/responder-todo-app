@@ -1,7 +1,7 @@
 import bcrypt
 
-import app.db_helper
-from app.api_helper import redirect_to, render_template
+from app.helpers import db_helper
+from app.helpers.api_helper import redirect_to, render_template
 from app.models.user import User
 
 
@@ -41,7 +41,7 @@ class LoginController:
         return len(msg) == 0, msg
 
     def _authenticate(self, email, row_password):
-        session = app.db_helper.session()
+        session = db_helper.session()
         user = session.query(User).filter(User.email == email).first()
         if user:
             check = bcrypt.checkpw(

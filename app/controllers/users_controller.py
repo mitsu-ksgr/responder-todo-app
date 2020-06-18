@@ -1,8 +1,8 @@
 import bcrypt
 from sqlalchemy.exc import SQLAlchemyError
 
-import app.db_helper
-from app.api_helper import redirect_to, render_template
+from app.helpers import db_helper
+from app.helpers.api_helper import redirect_to, render_template
 from app.models.user import User
 from app.validators.user_validator import UserValidator
 
@@ -13,13 +13,13 @@ from app.validators.user_validator import UserValidator
 class UsersController:
     # shows all users
     async def on_get(self, req, resp):
-        session = app.db_helper.session()
+        session = db_helper.session()
         users = session.query(User).all()
         resp.html = render_template("users/index.html", users=users)
 
     # Add new user
     async def on_post(self, req, resp):
-        session = app.db_helper.session()
+        session = db_helper.session()
         params = await req.media()
 
         # TODO: check email uniqueness
@@ -63,7 +63,7 @@ class UserController:
         else:
             idx = int(idx)
 
-        session = app.db_helper.session()
+        session = db_helper.session()
         user = session.query(User).get(idx)
         resp.html = render_template("users/show.html", user=user)
 
@@ -89,7 +89,7 @@ class UserController:
         return
 
     def on_patch(self, req, resp, idx, params):
-        session = app.db_helper.session()
+        session = db_helper.session()
         user = session.query(User).get(idx)
         if not user:
             # Note: users/show.html allows none user
@@ -126,7 +126,7 @@ class UserController:
         session.close()
 
     def on_delete(self, req, resp, idx):
-        session = app.db_helper.session()
+        session = db_helper.session()
         user = session.query(User).get(idx)
         if not user:
             redirect_to(resp, "/users")
