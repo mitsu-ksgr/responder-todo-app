@@ -1,8 +1,8 @@
-import bcrypt
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.helpers import db_helper
 from app.helpers.api_helper import redirect_to, render_template
+from app.helpers.session_helper import hash_password
 from app.models.user import User
 from app.validators.user_validator import UserValidator
 
@@ -32,11 +32,10 @@ class UsersController:
             return
 
         try:
-            row_pass = params["password"]
-            enc_pass = bcrypt.hashpw(row_pass.encode("utf-8"), bcrypt.gensalt())
+            hashed_pass = hash_password(params["password"])
             user = User(
                 email=params["email"],
-                encrypted_password=enc_pass,
+                encrypted_password=hashed_pass,
                 name=params["name"],
                 location=params.get("location", ""),
                 profile=params.get("profile", ""),
@@ -110,9 +109,7 @@ class UserController:
         user.profile = params.get("profile", user.profile)
         user.location = params.get("location", user.location)
         if "password" in params:
-            row_pass = params["password"]
-            enc_pass = bcrypt.hashpw(row_pass.encode("utf-8"), bcrypt.gensalt())
-            user.encrypted_password = enc_pass
+            user.encrypted_password = hash_password(params["password"])
 
         try:
             session.commit()
