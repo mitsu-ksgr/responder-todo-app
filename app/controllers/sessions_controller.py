@@ -1,16 +1,8 @@
 import bcrypt
-from sqlalchemy.exc import SQLAlchemyError
 
 import app.db_helper
 from app.api_helper import redirect_to, render_template
 from app.models.user import User
-
-
-# TODO: error handling
-
-# [GET]  /login ..... ログインフォーム
-# [POST] /login ..... session#new
-# [POST] /logout .... session#destroy
 
 
 class LogoutController:
