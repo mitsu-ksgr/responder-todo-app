@@ -10,7 +10,8 @@ class LogoutController:
         resp.session.pop("user_id")
 
 
-        redirect_to(resp, "/")
+
+        redirect_to(resp, '/')
 
 
 class LoginController:
