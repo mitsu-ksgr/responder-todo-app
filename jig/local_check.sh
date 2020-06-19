@@ -7,8 +7,12 @@ if [ "${1+$1}" = "-i" ]; then
 fi
 
 echo "----- Lint with flake8 -----"
-docker-compose exec web pipenv run flake8 --exit-zero app/*.py app/*/*.py
+docker-compose exec web pipenv run flake8 --exit-zero\
+    app/*.py app/*/*.py\
+    tests/*.py tests/*/*.py
 
 echo "----- Format with black -----"
-docker-compose exec web pipenv run black app/*.py app/*/*.py
+docker-compose exec web pipenv run black \
+    app/*.py app/*/*.py\
+    tests/*.py tests/*/*.py
 
