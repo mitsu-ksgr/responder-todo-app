@@ -1,19 +1,13 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <title>Responder Test</title>
-</head>
-<body>
-  <h1>Hello Responder!</h1>
+{%- extends "layout.html" %}
+{%- block content %}
 
-  <div>
-    <h3>Links</h3>
-    <ul>
-      <li>Root: <a href="/">/</a></li>
-      <li>Users: <a href="/users">/users</a></li>
-      <li>Login: <a href="/login">/login</a></li>
-    </ul>
-  </div>
-</body>
-</html>
+<h3>Links</h3>
+<div>
+  <ul>
+    <li>Root: <a href="/">/</a></li>
+    <li>Users: <a href="/users">/users</a></li>
+    <li>Login: <a href="/login">/login</a></li>
+  </ul>
+</div>
+{%- endblock %}
+
