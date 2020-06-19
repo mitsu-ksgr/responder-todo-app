@@ -14,8 +14,8 @@ class User(declarative_base()):
     id = Column(INTEGER(unsigned=True), primary_key=True, autoincrement=True)
     email = Column(String(255))
     encrypted_password = Column(String(255))
-    name = Column(String(255), convert_unicode=True)
-    location = Column(String(255, convert_unicode=True))
+    name = Column(String(255))
+    location = Column(String(255))
     profile = Column(Text)
     created_at = Column(
         DateTime,
