@@ -6,8 +6,9 @@
 
 import responder
 
-from app.controllers.users_controller import UsersController, UserController
 from app.controllers.sessions_controller import LoginController, LogoutController
+from app.controllers.signup_controller import SignupController
+from app.controllers.users_controller import UsersController, UserController
 from config import app_config
 
 api = responder.API(templates_dir="app/templates")
@@ -30,6 +31,7 @@ def db_info(req, resp):
     resp.text = txt
 
 
+api.add_route("/join", SignupController)
 api.add_route("/users", UsersController)
 api.add_route("/user/{idx}", UserController)
 api.add_route("/login", LoginController)

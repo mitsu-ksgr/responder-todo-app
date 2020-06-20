@@ -1,0 +1,36 @@
+{%- extends "layout.html" %}
+{%- block content %}
+
+<h3>Sign in</h3>
+
+<div>
+  {% if messages|length > 0 %}
+  <h4>Errors</h4>
+  <ul>
+    {% for msg in messages %}
+    <li>{{ msg }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <form action="/join" method="post">
+    <p>
+      <label for="name">Username:</label><br>
+      <input type="text" name="name" id="name">
+    </p>
+    <p>
+      <label for="email">Email address:</label><br>
+      <input type="email" name="email" id="email">
+    </p>
+    <p>
+      <label for="password">Password:</label><br>
+      <input type="password" name="password" id="password">
+    </p>
+    <p>
+      <input type="submit" value="Create Account">
+    </p>
+  </form>
+</div>
+
+{%- endblock %}
+
