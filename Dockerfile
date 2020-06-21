@@ -25,7 +25,7 @@ COPY Pipfile /app/Pipfile
 COPY Pipfile.lock /app/Pipfile.lock
 
 # Install dependencies
-RUN pipenv install --deploy --system
+RUN pipenv install --deploy --system --dev
 
 EXPOSE 80
 CMD ["/bin/bash"]

@@ -13,6 +13,17 @@ services:
       MYSQL_USER: dev_user
       MYSQL_PASSWORD: password
 
+  test_db:
+    container_name: test_db
+    image: mysql:5.7
+    ports:
+      - '33062:3306'
+    environment:
+      MYSQL_DATABASE: app
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: dev_user
+      MYSQL_PASSWORD: password
+
   web:
     container_name: web
     build:

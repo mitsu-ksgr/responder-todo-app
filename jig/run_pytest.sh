@@ -7,5 +7,6 @@ if [ -n "${1+$1}" ]; then
     TARGET="$1"
 fi
 
-docker-compose exec web pipenv run pytest $TARGET
+docker-compose run -e APP_ENV=test --rm web\
+    pipenv run pytest $TARGET
 
