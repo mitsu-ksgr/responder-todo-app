@@ -49,9 +49,6 @@ def api():
 
 @pytest.fixture
 def db_session():
-    import sqlalchemy
-    from config import app_config
+    import app.helpers.db_helper
 
-    engine = sqlalchemy.create_engine(app_config.get("db", "url"), echo=False)
-    Session = sqlalchemy.orm.sessionmaker(bind=engine)
-    return Session()
+    return app.helpers.db_helper.session()
