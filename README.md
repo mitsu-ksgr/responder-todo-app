@@ -51,6 +51,9 @@ $ docker-compose run --rm web pipenv install mysql-connector-python
 $ docker-compose run --rm web pipenv install --dev black
 or
 $ docker run --rm web pipenv install mysql-connector-python
+
+# Run pytest
+$ docker-compose run -e APP_ENV=test --rm web pipenv run pytest tests
 ```
 
 #### Alembic
