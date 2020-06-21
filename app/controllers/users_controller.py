@@ -17,41 +17,6 @@ class UsersController:
         users = session.query(User).all()
         resp.html = render_template("users/index.html", users=users)
 
-    # Add new user
-    async def on_post(self, req, resp):
-        session = db_helper.session()
-        params = await req.media()
-
-        # TODO: check email uniqueness
-        validator = UserValidator("create", params)
-        if not validator.valid:
-            users = session.query(User).all()
-            resp.html = render_template(
-                "users/index.html", users=users, messages=validator.messages
-            )
-            return
-
-        try:
-            hashed_pass = hash_password(params["password"])
-            user = User(
-                email=params["email"],
-                encrypted_password=hashed_pass,
-                name=params["name"],
-                location=params.get("location", ""),
-                profile=params.get("profile", ""),
-            )
-            session.add(user)
-            session.commit()
-        except SQLAlchemyError as e:
-            print(e)
-            session.rollback()
-        except Exception as e:
-            print(e)
-            session.rollback()
-        finally:
-            session.close()
-        redirect_to(resp, "/users")
-
 
 # /user/{idx}
 class UserController:
