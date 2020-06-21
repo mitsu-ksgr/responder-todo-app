@@ -15,6 +15,7 @@ class SignupController:
         params = await req.media()
         validator = SignupValidator(params)
         if not validator.valid:
+            resp.status_code = 422
             resp.html = render_template("signup/join.html", messages=validator.messages)
             return
 
@@ -41,6 +42,8 @@ class SignupController:
             session.close()
 
         if len(err_msg) > 0:
+            resp.status_code = 500
             resp.html = render_template("signup/join.html", messages=err_msg)
         else:
+            resp.status_code = 201
             resp.html = render_template("signup/registered.html")
