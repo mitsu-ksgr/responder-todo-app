@@ -9,13 +9,6 @@ from alembic import context
 # access to the values within the .ini file in use.
 config = context.config
 
-# Overwrite the alembic.ini sqlalchemy.url
-import os
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from config import app_config
-config.set_main_option('sqlalchemy.url', app_config.get('db', 'url'))
-
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
@@ -30,6 +23,18 @@ target_metadata = None
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+
+# Overwrite the alembic.ini sqlalchemy.url
+x_db_url = context.get_x_argument(as_dictionary=True).get('x_db_url')
+if x_db_url:
+    # > alembic -x x_db_url=DB_URL upgrade head
+    config.set_main_option('sqlalchemy.url', x_db_url)
+else:
+    import os
+    import sys
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+    from config import app_config
+    config.set_main_option('sqlalchemy.url', app_config.get('db', 'url'))
 
 
 def run_migrations_offline():
