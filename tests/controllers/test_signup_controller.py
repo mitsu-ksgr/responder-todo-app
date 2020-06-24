@@ -24,6 +24,7 @@ def test_signup_post(api, db_session):
     }
     r = api.requests.post("/join", params)
     assert r.status_code == 201
+    assert r.cookies.get("session") is not None
 
     user = db_session.query(User).filter(User.email == email).first()
     assert user is not None

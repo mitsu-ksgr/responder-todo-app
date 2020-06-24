@@ -2,7 +2,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.helpers import db_helper
 from app.helpers.api_helper import render_template
-from app.helpers.session_helper import hash_password
+from app.helpers.session_helper import hash_password, login
 from app.models.user import User
 from app.validators.signup_validator import SignupValidator
 
@@ -30,6 +30,7 @@ class SignupController:
             )
             session.add(user)
             session.commit()
+            user = session.query(User).filter(User.email == params["email"]).first()
         except SQLAlchemyError as e:
             print(e)
             err_msg.append("Internal Server Error")
@@ -45,5 +46,6 @@ class SignupController:
             resp.status_code = 500
             resp.html = render_template("signup/join.html", messages=err_msg)
         else:
+            login(resp, user.id)
             resp.status_code = 201
             resp.html = render_template("signup/registered.html")
