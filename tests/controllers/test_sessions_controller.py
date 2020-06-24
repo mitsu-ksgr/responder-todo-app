@@ -22,7 +22,6 @@ def test_post_login(api, db_session):
     assert r.cookies.get("session") is not None
 
 
-# TODO: Add invalid case
 def test_post_login_with_invalid_email(api, db_session):
     r = api.requests.post("/login", {"email": "missing_email", "password": "password"})
     assert r.status_code == 422
