@@ -1,4 +1,5 @@
 import pytest
+import app.helpers.db_helper
 
 
 #
@@ -25,6 +26,14 @@ def _init_test_db():
     alembic.config.main(argv=argv)
 
 
+def _make_dummy_data():
+    from db.dummy.users import generate_serial_users
+
+    session = app.helpers.db_helper.session()
+    session.bulk_save_objects(generate_serial_users())
+    session.commit()
+
+
 #
 # Hooks
 # see: https://stackoverflow.com/a/35394239
@@ -35,6 +44,7 @@ def pytest_sessionstart(session):
     before performing collection and entering the run test loop.
     """
     _init_test_db()
+    _make_dummy_data()
 
 
 #
@@ -44,7 +54,12 @@ def pytest_sessionstart(session):
 def api():
     import app.main
 
-    return app.main.api
+    # clear session/cookies for each tests
+    api = app.main.api
+    s = api.session()
+    s.cookies.clear()
+
+    return api
 
 
 @pytest.fixture

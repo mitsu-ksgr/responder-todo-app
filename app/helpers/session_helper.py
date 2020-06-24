@@ -36,7 +36,8 @@ def login(resp, user_id):
 
 
 def logout(resp):
-    resp.session.pop("user_id")
+    if "user_id" in resp.session:
+        del resp.session["user_id"]
 
 
 def current_user(resp, db_session):

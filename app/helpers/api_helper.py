@@ -12,8 +12,8 @@ from pathlib import Path
 import jinja2
 
 
-def redirect_to(resp, location):
-    resp.status_code = 301
+def redirect_to(resp, location, status_code=301):
+    resp.status_code = status_code
     resp.text = f"Redirecting to: {location}"  # TODO: to optional
     resp.headers.update({"Location": location})
 

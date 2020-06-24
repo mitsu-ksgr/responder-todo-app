@@ -18,39 +18,40 @@
         <tr><td>Location</td><td>{{ user.location }}</td></tr>
       </table>
       <div>
-        <h4>Profile</h4>
+        <p>Profile</p>
         <p>{{ user.profile }}</p>
       </div>
     </div>
 
-    <div>
-      <h3>Update Profile</h3>
-      {% if messages|length > 0 %}
-        <ul>
-          {% for msg in messages %}
-          <li>{{ msg }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+    {% if me and me.id == user.id %}
+      <div>
+        <h3>Update Profile</h3>
+        {% if messages|length > 0 %}
+          <ul>
+            {% for msg in messages %}
+            <li>{{ msg }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
 
-      <form action="/user/{{user.id}}" method="post">
-        <input type="hidden" name="_method" value="patch">
+        <form action="/user/{{user.id}}" method="post">
+          <input type="hidden" name="_method" value="patch">
 
-        <p>Name: <input type="text" name="name" value="{{ user.name }}"></p>
-        <p>Email: <input type="email" name="email" value="{{ user.email }}"></p>
-        <p>Password: <input type="password" name="password" value=""></p>
-        <p>Location: <input type="text" name="location" value="{{ user.location }}"></p>
-        <p>
-          Profile:<br>
-          <textarea name="profile" rows="4" cols="25">{{ user.profile }}</textarea>
-        </p>
-        <p><input type="submit" value="Update"></p>
-      </form>
-      <form action="/user/{{user.id}}" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <p><input type="submit" value="Delete User"></p>
-      </form>
-    </div>
+          <p>Name: <input type="text" name="name" value="{{ user.name }}"></p>
+          <p>Password: <input type="password" name="password" value=""></p>
+          <p>Location: <input type="text" name="location" value="{{ user.location }}"></p>
+          <p>
+            Profile:<br>
+            <textarea name="profile" rows="4" cols="25">{{ user.profile }}</textarea>
+          </p>
+          <p><input type="submit" value="Update"></p>
+        </form>
+        <form action="/user/{{user.id}}" method="post">
+          <input type="hidden" name="_method" value="delete">
+          <p><input type="submit" value="Delete User"></p>
+        </form>
+      </div>
+    {% endif %}
   {% endif %}
 
   <footer>
