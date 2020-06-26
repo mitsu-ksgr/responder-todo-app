@@ -24,12 +24,16 @@ def root_path(req, resp):
     resp.html = api.template("index.html")
 
 
+# Sessions
 api.add_route("/join", SignupController)
-api.add_route("/users", UsersController)
-api.add_route("/user/{idx}", UserController)
 api.add_route("/login", LoginController)
 api.add_route("/logout", LogoutController)
 
+# Users
+api.add_route("/users", UsersController)
+api.add_route("/user/{idx}", UserController)
+
+# Debug
 if app_config.env == "development":
     from app.controllers.debug_controller import DebugController
 
