@@ -69,7 +69,6 @@ def db_session():
 
 @pytest.fixture
 def current_user():
-    import os
     from faker import Faker
 
     from app.helpers.session_helper import hash_password
