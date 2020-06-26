@@ -30,9 +30,13 @@ def _init_test_db():
 
 def _make_dummy_data():
     from db.dummy.users import generate_serial_users
+    from db.dummy.todos import add_serial_todos_to_user
 
     session = db_helper.session()
-    session.bulk_save_objects(generate_serial_users())
+    users = generate_serial_users(10)
+    for user in users[:5]:
+        add_serial_todos_to_user(user)
+    session.add_all(users)
     session.commit()
 
 

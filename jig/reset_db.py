@@ -37,10 +37,20 @@ def reset_db():
 def gen_dummy_users():
     import app.helpers.db_helper
     from db.dummy.users import generate_serial_users, generate_fake_users
+    from db.dummy.todos import add_serial_todos_to_user, add_dummy_todos_to_user
 
     session = app.helpers.db_helper.session()
-    session.bulk_save_objects(generate_serial_users())
-    session.bulk_save_objects(generate_fake_users())
+
+    users = generate_serial_users(10)
+    for user in users[3:]:
+        add_serial_todos_to_user(user)
+    session.add_all(users)
+
+    fake_users = generate_fake_users(10)
+    for user in fake_users[3:]:
+        add_dummy_todos_to_user(user)
+    session.add_all(fake_users)
+
     session.commit()
     session.close()
     print("dummy users generated.")

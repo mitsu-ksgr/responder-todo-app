@@ -1,14 +1,15 @@
-#!/usr/bin/python
-
 from datetime import datetime
 
 from sqlalchemy import Column, String, DateTime, Text
 from sqlalchemy.dialects.mysql import INTEGER
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.functions import current_timestamp
 
+from app.models.base import Base
+from app.models.todo import Todo  # noqa: F401 ... for init sqlalchemy's mapper
 
-class User(declarative_base()):
+
+class User(Base):
     __tablename__ = "users"
 
     id = Column(INTEGER(unsigned=True), primary_key=True, autoincrement=True)
@@ -27,7 +28,10 @@ class User(declarative_base()):
         DateTime, default=datetime.now(), nullable=False, onupdate=datetime.now()
     )
 
+    # Relations
+    todos = relationship("Todo", backref="user.id")
+
     def __repr__(self):
-        return "<User(id={}, name='{}', location={}, created_at='{}', updated_at='{}')>".format(
-            self.id, self.name, self.location, self.created_at, self.updated_at
+        return "<User(id={}, name='{}', created_at={}, updated_at={})>".format(
+            self.id, self.name, self.created_at, self.updated_at
         )
