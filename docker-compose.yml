@@ -31,6 +31,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./:/app
+    environment:
+      APP_ENV: development
     ports:
       - '8080:80'
     depends_on:
