@@ -1,5 +1,7 @@
 #!/bin/bash
 set -eu
 
-docker-compose exec web pipenv run alembic $@
+#echo "$@"
+
+docker-compose exec web pipenv run alembic "$@"
 
