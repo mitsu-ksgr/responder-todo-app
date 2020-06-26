@@ -1,5 +1,6 @@
 #!/bin/env python
 
+import argparse
 import os
 import sys
 
@@ -9,7 +10,6 @@ from config import app_config
 
 
 def dump_db_info():
-    print("* Database Connection")
     print(f"Dialect : {app_config.get('db', 'dialect')}")
     print(f"Driver  : {app_config.get('db', 'driver')}")
     print(f"Host    : {app_config.get('db', 'host')}")
@@ -47,13 +47,21 @@ def gen_dummy_users():
 
 
 if __name__ == "__main__":
-    print("----- Generate Dummy Data -----")
+    parser = argparse.ArgumentParser(description='Reset the DB.')
+    parser.add_argument(
+        '--with-dummy-data',
+        help="generate dummy data after reset",
+        action='store_true')
+    args = parser.parse_args()
+
+    print("* Database Connection")
     dump_db_info()
 
     print("\n\n* Reset databases")
     reset_db()
 
-    print("\n\n* Generate dummy data")
-    gen_dummy_users()
+    if args.with_dummy_data:
+        print("\n\n* Generate dummy data")
+        gen_dummy_users()
 
     print("all done!")
