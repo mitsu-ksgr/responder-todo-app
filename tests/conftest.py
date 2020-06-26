@@ -1,5 +1,7 @@
 import pytest
-import app.helpers.db_helper
+
+import app.main
+from app.helpers import db_helper
 
 
 #
@@ -29,7 +31,7 @@ def _init_test_db():
 def _make_dummy_data():
     from db.dummy.users import generate_serial_users
 
-    session = app.helpers.db_helper.session()
+    session = db_helper.session()
     session.bulk_save_objects(generate_serial_users())
     session.commit()
 
@@ -52,8 +54,6 @@ def pytest_sessionstart(session):
 #
 @pytest.fixture
 def api():
-    import app.main
-
     # clear session/cookies for each tests
     api = app.main.api
     s = api.session()
@@ -64,6 +64,34 @@ def api():
 
 @pytest.fixture
 def db_session():
-    import app.helpers.db_helper
+    return db_helper.session()
 
-    return app.helpers.db_helper.session()
+
+@pytest.fixture
+def current_user():
+    import os
+    from faker import Faker
+
+    from app.helpers.session_helper import hash_password
+    from app.models.user import User
+
+    fake = Faker()
+    email = f"test_user_{fake.random_number(digits=10)}@test.com"
+    user = User(
+        name=fake.name(),
+        email=email,
+        encrypted_password=hash_password("password"),
+        location=f"{fake.city()} {fake.country()}",
+        profile=fake.paragraph(),
+    )
+
+    session = db_helper.session()
+    session.add(user)
+    session.commit()
+    user = session.query(User).filter(User.email == email).first()
+    session.close()
+
+    api = app.main.api
+    api.requests.post("/login", {"email": user.email, "password": "password"})
+
+    return user
