@@ -9,10 +9,34 @@ from app.models.base import Base
 
 
 class TodoStatus(enum.Enum):
-    none = 0
-    wip = 1
-    pending = 2
-    done = 3
+    none = "none"
+    wip = "wip"
+    pending = "pending"
+    done = "done"
+
+    def __str__(self):
+        tbl = {
+            "none": "None",
+            "wip": "Work in progress",
+            "pending": "Pending",
+            "done": "Done",
+        }
+        return tbl[self.name]
+
+    @classmethod
+    def value_of(cls, value):
+        for st in TodoStatus:
+            if st.value == value:
+                return st
+        raise ValueError(f"'{value}' is not TodoStatus")
+
+    @classmethod
+    def is_value(cls, value):
+        for st in TodoStatus:
+            print(f"inTS: st.value({st.value}) == {value}")
+            if st.value == value:
+                return True
+        return False
 
 
 class Todo(Base):

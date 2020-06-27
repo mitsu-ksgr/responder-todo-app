@@ -10,6 +10,11 @@ import responder
 from app.controllers.sessions_controller import LoginController, LogoutController
 from app.controllers.signup_controller import SignupController
 from app.controllers.users_controller import UsersController, UserController
+from app.controllers.todos_controller import (
+    TodoListController,
+    NewTodoController,
+    TodoController,
+)
 from config import app_config
 
 # NOTE: in prod, you should set the RESPONDER_SECRET_KEY environment value./pp
@@ -32,6 +37,11 @@ api.add_route("/logout", LogoutController)
 # Users
 api.add_route("/users", UsersController)
 api.add_route("/user/{idx}", UserController)
+
+# Todo
+api.add_route("/todolist", TodoListController)
+api.add_route("/todo/new", NewTodoController)
+api.add_route("/todo/{idx}", TodoController)
 
 # Debug
 if app_config.env == "development":

@@ -18,8 +18,7 @@ def redirect_to(resp, location, status_code=301):
     resp.headers.update({"Location": location})
 
 
-def render_template(template_name, **values):
-    # TODO: read app_config
+def jinja2_template(template_name):
     template_paths = [str(Path(os.path.abspath("app/templates")))]
 
     # see: https://responder.kennethreitz.org/en/latest/_modules/responder/api.html#API.template
@@ -27,5 +26,9 @@ def render_template(template_name, **values):
         loader=jinja2.FileSystemLoader(template_paths, followlinks=True),
         autoescape=jinja2.select_autoescape(["html", "xml"]),
     )
-    template = jinja_env.get_template(template_name)
+    return jinja_env.get_template(template_name)
+
+
+def render_template(template_name, **values):
+    template = jinja2_template(template_name)
     return template.render(**values)

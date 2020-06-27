@@ -1,0 +1,36 @@
+{%- extends "layout.html" %}
+{%- block content %}
+
+<h3>New Todo</h3>
+
+<div>
+  {% if messages|length > 0 %}
+  <h4>Errors</h4>
+  <ul>
+    {% for msg in messages %}
+      <li>{{ msg }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <form action="/todo/new" method="post">
+    <p>
+      <label for="title">Title:</label><br>
+      <input type="text" name="title" id="title">
+    </p>
+    <p>
+      <label for="due_date">Due Date:</label><br>
+      <input type="date" name="due_date" id="due_date">
+    </p>
+    <p>
+      <label for="description">Description</label><br>
+      <textarea name="description" id="description" rows="4" cols="25"></textarea>
+    </p>
+    <p>
+      <input type="submit" value="Create Todo">
+    </p>
+  </form>
+</div>
+
+{%- endblock %}
+

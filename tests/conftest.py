@@ -77,6 +77,7 @@ def current_user():
 
     from app.helpers.session_helper import hash_password
     from app.models.user import User
+    from app.models.todo import Todo
 
     fake = Faker()
     email = f"test_user_{fake.random_number(digits=10)}@test.com"
@@ -87,6 +88,7 @@ def current_user():
         location=f"{fake.city()} {fake.country()}",
         profile=fake.paragraph(),
     )
+    user.todos.append(Todo(title="Test Todo", status="none", description="test todo",))
 
     session = db_helper.session()
     session.add(user)

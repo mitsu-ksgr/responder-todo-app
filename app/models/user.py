@@ -29,7 +29,7 @@ class User(Base):
     )
 
     # Relations
-    todos = relationship("Todo", backref="user.id")
+    todos = relationship("Todo", cascade="all, delete-orphan", backref="user.id")
 
     def __repr__(self):
         return "<User(id={}, name='{}', created_at={}, updated_at={})>".format(

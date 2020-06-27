@@ -1,0 +1,69 @@
+{%- extends "layout.html" %}
+{%- block content %}
+
+<h3>{{ todo.title }}</h3>
+<div>
+  <p>Status: {{ todo.status }}</p>
+  <p>Due Date: {{ todo.due_date or "---" }}</p>
+  <p>Description:<br>
+    {{ todo.description }}
+  </p>
+</div>
+
+<div>
+  <h3>Update Todo</h3>
+
+  {% if messages|length > 0 %}
+    <h4>Errors</h4>
+    <ul>
+      {% for msg in messages %}
+        <li>{{ msg }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form action="/todo/{{todo.id}}" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <p>
+      <label for="title">Title:</label><br>
+      <input type="text" name="title" id="title" value="{{todo.title}}">
+    </p>
+    <p>
+      <label for="status">Status: </label>
+      <select name="status">
+        {% for st in TodoStatus %}
+          <option
+            value="{{ st.value }}"
+            {{ 'selected' if st.value == todo.status.value else '' }}
+            >{{ st }}</option>
+        {% endfor %}
+      </select>
+    </p>
+    <p>
+    <label for="due_date">Due Date: </label><br>
+      <input
+        type="date" name="due_date" id="due_date"
+        value="{{ todo.due_date.date() if todo.due_date is not none else '' }}">
+    </p>
+    <p>
+      <label for="description">Description</label><br>
+      <textarea name="description" id="description" rows="4" cols="25">{{
+        todo.description
+      }}</textarea>
+    </p>
+    <p>
+      <input type="submit" value="Update Todo">
+    </p>
+  </form>
+  <form action="/todo/{{todo.id}}" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <p><input type="submit" value="Delete Todo"></p>
+  </form>
+</div>
+
+<div>
+  <a href="/todolist">back to list</a>
+</div>
+
+{%- endblock %}
+

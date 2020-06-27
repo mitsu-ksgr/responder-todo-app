@@ -1,0 +1,25 @@
+{%- extends "layout.html" %}
+{%- block content %}
+
+<div>
+  <h3>Your Todo</h3>
+
+  {% if user.todos|length > 0 %}
+    <ul>
+      {% for todo in user.todos %}
+        <li>
+          <a href="/todo/{{todo.id}}">[{{ todo.status }}] {{ todo.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>no todo yet</p>
+  {% endif %}
+</div>
+
+<div>
+  <a href="/todo/new">Add new todo</a>
+</div>
+
+{%- endblock %}
+
