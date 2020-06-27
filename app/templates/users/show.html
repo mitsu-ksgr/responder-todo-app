@@ -1,61 +1,89 @@
 {%- extends "layout.html" %}
 {%- block content %}
 
-<h3>Profile</h3>
+<div class="uk-container uk-margin">
+  <ul class="uk-breadcrumb">
+    <li><a href="/users">users</a></li>
+    <li><span>{{ user.name }}</span></li>
+  </ul>
+</div>
 
-{% if user is none %}
-  <div><p>user not found</p></div>
-{% else %}
+<div class="uk-container">
+  <h3>{{ user.name }}</h3>
   <div>
-    <table>
-      <tr><td>ID</td><td>{{ user.id }}</td></tr>
-      <tr><td>Email</td><td>{{ user.email }}</td></tr>
-      <tr><td>Name</td><td>{{ user.name }}</td></tr>
-      <tr><td>Location</td><td>{{ user.location }}</td></tr>
+    <table class="uk-table uk-table-justify uk-table-divider">
+      <tr><th class="uk-width-small">ID</th><td>{{ user.id }}</td></tr>
+      <tr><th>Email address</th><td>{{ user.email }}</td></tr>
+      <tr><th>Username</th><td>{{ user.name }}</td></tr>
+      <tr><th>Location</th><td>{{ user.location if user.location }}</td></tr>
     </table>
-    <div>
-      <p>Profile</p>
-      <p>{{ user.profile }}</p>
-    </div>
+    {% if user.profile is not none %}
+      <div>
+        <h4>Profile</h4>
+        <p>{{ user.profile }}</p>
+      </div>
+    {% endif %}
   </div>
+</div>
 
-  {% if me and me.id == user.id %}
-    <div>
-      <h3>Update Profile</h3>
-      {% if messages|length > 0 %}
-        <ul>
-          {% for msg in messages %}
-            <li>{{ msg }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+{% if me and me.id == user.id %}
+  <div class="uk-container">
+    <h3>Edit Profile</h3>
+    <form action="/user/{{user.id}}" method="post" class="uk-form-horizontal">
+      <input type="hidden" name="_method" value="patch">
 
-      <form action="/user/{{user.id}}" method="post">
-        <input type="hidden" name="_method" value="patch">
+      <div class="uk-margin">
+        <label for="name" class="uk-form-label">Username</label>
+        <div class="uk-form-controls">
+          <input type="text" name="name" id="name"
+            placeholder="your name" class="uk-input"
+            value="{{ user.name }}">
+        </div>
+      </div>
+      <div class="uk-margin">
+        <label for="password" class="uk-form-label">Password</label>
+        <div class="uk-form-controls">
+          <input type="password" name="password" id="password" class="uk-input">
+        </div>
+      </div>
+      <div class="uk-margin">
+        <label for="location" class="uk-form-label">Location</label>
+        <div class="uk-form-controls">
+          <input type="text" name="location" value="{{ user.location if user.location }}"
+            placeholder="city, country" class="uk-input">
+        </div>
+      </div>
 
-        <p>Name: <input type="text" name="name" value="{{ user.name }}"></p>
-        <p>Password: <input type="password" name="password" value=""></p>
-        <p>Location: <input type="text" name="location" value="{{ user.location }}"></p>
-        <p>
-        Profile:<br>
-        <textarea name="profile" rows="4" cols="25">{{ user.profile }}</textarea>
-        </p>
-        <p><input type="submit" value="Update"></p>
-      </form>
-      <form action="/user/{{user.id}}" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <p><input type="submit" value="Delete User"></p>
-      </form>
-    </div>
-  {% endif %}
+      <div class="uk-margin">
+        <label for="profile" class="uk-form-label">Profile</label>
+        <div class="uk-form-controls">
+          <textarea
+            name="profile" rows="4" class="uk-textarea"
+            >{{ user.profile if user.profile }}</textarea>
+        </div>
+      </div>
+      <div class="uk-margin">
+        {% if messages|length > 0 %}
+          <ul class="">
+            {% for msg in messages %}
+              <li class="uk-form-danger">{{ msg }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="uk-margin">
+        <button class="uk-button uk-button-default">Update</button>
+      </div>
+    </form>
+
+    <form action="/user/{{user.id}}" method="post">
+      <input type="hidden" name="_method" value="delete">
+      <div class="uk-margin">
+        <button class="uk-button uk-button-default">Delete User</button>
+      </div>
+    </form>
+  </div>
 {% endif %}
-
-<footer>
-  <nav>
-    <a href="/">top</a>
-    <a href="/users">users</a>
-  </nav>
-</footer>
 
 {%- endblock %}
 
