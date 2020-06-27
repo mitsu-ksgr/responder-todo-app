@@ -3,26 +3,43 @@
 <head>
   <meta charset="utf-8">
   <title>Responder Todo App</title>
+  <link rel="stylesheet" href="static/css/uikit.min.css" />
+  <script src="static/js/uikit.min.js"></script>
+  <script src="static/js/uikit-icons.min.js"></script>
 </head>
 <body>
   <div>
-    <header>
-      <nav><h1><a href="/">Todo App</a></h1></nav>
-    </header>
-  </div>
+    <div class="uk-navbar-container uk-sticky uk-sticky-fixed">
+      <div class="uk-container uk-container-expand uk-section-primary">
+        <nav class="uk-navbar">
+          <div class="uk-navbar-left">
+            <a href="/" class="uk-navbar-item uk-logo">Todo App</a>
+          </div>
+          <div class="uk-navbar-right">
+            <ul class="uk-navbar-nav">
+              <li>
+                <a href="https://github.com/mitsu-ksgr/responder-todo-app">github</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
 
-  <div>
-    {# Main Contents #}
-    {%- block content %}{% endblock %}
-  </div>
+    <div class="uk-container uk-section uk-section-default">
+      {# Main Contents #}
+      {%- block content %}{% endblock %}
+    </div>
 
-  <div>
-    <footer>
-      <nav>
-        <a href="/">top</a>
-        <a href="https://github.com/mitsu-ksgr/responder-todo-app">github</a>
+    <div class="uk-container uk-container-expand uk-section-muted">
+      <nav class="uk-navbar">
+        <div class="uk-navbar-center">
+          <ul class="uk-navbar-nav">
+            <li><a href="/">top</a></li>
+            <li><a href="https://github.com/mitsu-ksgr/responder-todo-app">github</a></li>
+        </div>
       </nav>
-    </footer>
+    </div>
   </div>
 </body>
 </html>
