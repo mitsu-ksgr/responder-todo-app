@@ -23,6 +23,10 @@ $ docker-compose exec web pipenv run alembic upgrade head
 - User Name: `dev_user`
 - Password: `password`
 
+```sh
+# Access database
+$ docker-compose exec db mysql --default-character-set=utf8mb4 -u root -proot_password
+```
 
 ### MySQL
 - sqlalchemy ... The Database Toolkit for Python

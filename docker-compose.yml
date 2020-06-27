@@ -12,6 +12,7 @@ services:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_USER: dev_user
       MYSQL_PASSWORD: password
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
   test_db:
     container_name: test_db
@@ -23,6 +24,7 @@ services:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_USER: dev_user
       MYSQL_PASSWORD: password
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
   web:
     container_name: web
