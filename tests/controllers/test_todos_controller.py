@@ -167,15 +167,9 @@ def test_delete_todo(api, db_session, current_user):
     assert todo is None
 
 
-def test_delete_user_no_loggin(api, db_session, current_user):
-    todo = (
-        db_session.query(Todo)
-        .filter(Todo.user_id == current_user.id)
-        .order_by(Todo.id.desc())
-        .first()
-    )
-    r = api.requests.post(f"/todo/{todo.id}", {"_method": "delete"})
-    assert r.status_code == 403
+def test_delete_user_no_loggin(api, db_session):
+    r = api.requests.post(f"/todo/1", {"_method": "delete"})
+    assert r.status_code == 401
 
 
 def test_delete_user_delete_others_todo(api, db_session, current_user):
