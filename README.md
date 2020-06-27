@@ -1,9 +1,9 @@
-Responder TODO app
+Responder Todo App
 ==================
 
 ![Python application](https://github.com/mitsu-ksgr/responder-todo-app/workflows/Python%20application/badge.svg)
 
-Responder を使って TODO アプリを作ってみる.
+Responder を使った TODO アプリの作成サンプル.
 
 ### Setup
 
@@ -14,6 +14,9 @@ $ docker-compose up -d
 # Setup db
 $ docker-compose exec web pipenv run alembic upgrade head
 ```
+
+and, access http://localhost:8080/
+
 
 ### MySQL Connection Info (for dev)
 - Database Type: `MySQL`
@@ -28,6 +31,7 @@ $ docker-compose exec web pipenv run alembic upgrade head
 $ docker-compose exec db mysql --default-character-set=utf8mb4 -u root -proot_password
 ```
 
+## References
 ### MySQL
 - sqlalchemy ... The Database Toolkit for Python
   - https://pypi.org/project/SQLAlchemy/
@@ -42,10 +46,10 @@ $ docker-compose exec db mysql --default-character-set=utf8mb4 -u root -proot_pa
 
 #### Timezone
 - DB は UTC に設定
-- Application 側で localtime (ないしクライアントのtimezone) に変換する
+- Application 側で localtime (ないしクライアントのtimezone) に変換する（予定）
 
 
-### Commands
+## Command Notes
 ```sh
 # Show logs
 $ docker-compose logs -f
@@ -60,7 +64,7 @@ $ docker run --rm web pipenv install mysql-connector-python
 $ docker-compose run -e APP_ENV=test --rm web pipenv run pytest tests
 ```
 
-#### Alembic
+### Alembic
 ```sh
 $ docker-compose exec web pipenv run alembic -h
 
@@ -74,17 +78,17 @@ $ docker-compose exec web pipenv run alembic upgrade head
 $ docker-compose exec web pipenv run alembic downgrade -1
 ```
 
-#### Linter
+### Linter
 ```sh
 $ docker-compose exec web pipenv run flake8 app/*.py app/*/*.py
 ```
 
-#### Code formatting
+### Code formatting
 ```sh
 $ docker-compose exec web pipenv run black app/*.py app/*/*.py
 ```
 
-### Notes
+## Notes
 #### Alembic
 - Alembic を使用する準備
   - [Tutorial — Alembic 1\.4\.2 documentation](https://alembic.sqlalchemy.org/en/latest/tutorial.html)
