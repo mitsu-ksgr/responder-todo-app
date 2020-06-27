@@ -1,25 +1,48 @@
 {%- extends "layout.html" %}
 {%- block content %}
 
-<div>
-  <h3>Your Todo</h3>
+<h3>Todo List</h3>
 
-  {% if user.todos|length > 0 %}
-    <ul>
-      {% for todo in user.todos %}
-        <li>
-          <a href="/todo/{{todo.id}}">[{{ todo.status }}] {{ todo.title }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>no todo yet</p>
-  {% endif %}
-</div>
+{% if user.todos|length > 0 %}
+  <div class="uk-container">
+    <table class="uk-table">
+      <thead>
+        <tr>
+          <th class="uk-table-large">Title</th>
+          <th class="uk-table-small">Created At</th>
+          <th class="uk-table-small">Due Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for todo in user.todos %}
+          <tr>
+            <td>
+              <a href="/todo/{{todo.id}}">
+                <span class="uk-badge">{{ todo.status }}</span>&nbsp;
+                {{ todo.title }}
+              </a>
+            </td>
+            <td>{{ todo.created_at }}</td>
+            <td>{{ todo.due_date if todo.due_date }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-<div>
-  <a href="/todo/new">Add new todo</a>
-</div>
+    <div class="uk-margin">
+      <a class="uk-button uk-button-default" href="/todo/new">
+        Add New Task
+      </a>
+    </div>
+  </div>
+{% else %}
+  <div class="uk-container">
+    <p uk-margin>No todo yet ...</p>
+    <a class="uk-button uk-button-default" href="/todo/new">
+      Create First Task!
+    </a>
+  </div>
+{% endif %}
 
 {%- endblock %}
 

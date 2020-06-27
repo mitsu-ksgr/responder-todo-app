@@ -1,35 +1,47 @@
 {%- extends "layout.html" %}
 {%- block content %}
 
-<h3>New Todo</h3>
+<h3>New Task</h3>
 
 <div>
-  {% if messages|length > 0 %}
-  <h4>Errors</h4>
-  <ul>
-    {% for msg in messages %}
-      <li>{{ msg }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-
-  <form action="/todo/new" method="post">
-    <p>
-      <label for="title">Title:</label><br>
-      <input type="text" name="title" id="title">
-    </p>
-    <p>
-      <label for="due_date">Due Date:</label><br>
-      <input type="date" name="due_date" id="due_date">
-    </p>
-    <p>
-      <label for="description">Description</label><br>
-      <textarea name="description" id="description" rows="4" cols="25"></textarea>
-    </p>
-    <p>
-      <input type="submit" value="Create Todo">
-    </p>
-  </form>
+  <div class="uk-container">
+    <form action="/todo/new" method="post" class="uk-form-horizontal">
+      <div class="uk-margin">
+        <label for="title" class="uk-form-label">Title</label>
+        <div class="uk-form-controls">
+          <input type="text" name="title" id="title"
+            placeholder="task title" class="uk-input">
+        </div>
+      </div>
+      <div class="uk-margin">
+        <label for="due_date" class="uk-form-label">Due Date</label>
+        <div class="uk-form-controls">
+          <input type="date" name="due_date" id="due_date" class="uk-input">
+        </div>
+      </div>
+      <div class="uk-margin">
+        <label for="description" class="uk-form-label">Description</label>
+        <div class="uk-form-controls">
+          <textarea
+            name="description" id="description"
+            rows="4" class="uk-textarea"
+            ></textarea>
+        </div>
+      </div>
+      <div class="uk-margin">
+        {% if messages|length > 0 %}
+          <ul class="">
+            {% for msg in messages %}
+              <li class="uk-form-danger">{{ msg }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="uk-margin">
+        <button class="uk-button uk-button-default">Create Task</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 {%- endblock %}

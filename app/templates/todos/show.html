@@ -1,68 +1,104 @@
 {%- extends "layout.html" %}
 {%- block content %}
 
-<h3>{{ todo.title }}</h3>
-<div>
-  <p>Status: {{ todo.status }}</p>
-  <p>Due Date: {{ todo.due_date or "---" }}</p>
-  <p>Description:<br>
-    {{ todo.description }}
-  </p>
+<div class="uk-container uk-margin">
+  <ul class="uk-breadcrumb">
+    <li><a href="/todolist">todolist</a></li>
+    <li><span>{{ todo.title}}</span></li>
+  </ul>
 </div>
 
-<div>
-  <h3>Update Todo</h3>
+<div class="uk-container">
+  <h3>
+    <span class="uk-badge">{{ todo.status }}</span>&nbsp;
+    {{ todo.title }}
+  </h3>
+  <div>
+    <table class="uk-table uk-table-justify">
+      <tr><th>Created At</th><td>{{ todo.created_at }}</td></tr>
+      <tr><th>Due Date</th><td>{{ todo.due_date }}</td></tr>
+    </table>
+    {% if todo.description is not none %}
+      <div>
+        <h4>Description</h4>
+        <p>{{ todo.description }}</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
 
-  {% if messages|length > 0 %}
-    <h4>Errors</h4>
-    <ul>
-      {% for msg in messages %}
-        <li>{{ msg }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+<hr class="uk-divider-icon">
 
-  <form action="/todo/{{todo.id}}" method="post">
+<div class="uk-container">
+  <h3>Edit Profile</h3>
+  <form action="/todo/{{todo.id}}" method="post" class="uk-form-horizontal">
     <input type="hidden" name="_method" value="patch">
-    <p>
-      <label for="title">Title:</label><br>
-      <input type="text" name="title" id="title" value="{{todo.title}}">
-    </p>
-    <p>
-      <label for="status">Status: </label>
-      <select name="status">
-        {% for st in TodoStatus %}
+
+    <div class="uk-margin">
+      <label for="title" class="uk-form-label">Title</label>
+      <div class="uk-form-controls">
+        <input type="text" name="title" id="title"
+          value="{{ todo.title }}"
+          placeholder="task title" class="uk-input">
+      </div>
+    </div>
+    <div class="uk-margin">
+      <label for="status" class="uk-form-label">Status</label>
+      <div class="uk-form-controls">
+        <select name="status" id="status" class="uk-select">
+          {% for st in TodoStatus %}
           <option
             value="{{ st.value }}"
             {{ 'selected' if st.value == todo.status.value else '' }}
             >{{ st }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="uk-margin">
+      <label for="due_date" class="uk-form-label">Due Date</label>
+      <div class="uk-form-controls">
+        <input
+          type="date" name="due_date" id="due_date"
+          value="{{ todo.due_date.date() if todo.due_date is not none else '' }}"
+          class="uk-input">
+      </div>
+    </div>
+    <div class="uk-margin">
+      <label for="description" class="uk-form-label">Description</label>
+      <div class="uk-form-controls">
+        <textarea
+          name="description" id="description"
+          rows="4" class="uk-textarea"
+          >{{ todo.description if todo.description }}</textarea>
+      </div>
+    </div>
+    <div class="uk-margin">
+      {% if messages|length > 0 %}
+      <ul class="">
+        {% for msg in messages %}
+        <li class="uk-form-danger">{{ msg }}</li>
         {% endfor %}
-      </select>
-    </p>
-    <p>
-    <label for="due_date">Due Date: </label><br>
-      <input
-        type="date" name="due_date" id="due_date"
-        value="{{ todo.due_date.date() if todo.due_date is not none else '' }}">
-    </p>
-    <p>
-      <label for="description">Description</label><br>
-      <textarea name="description" id="description" rows="4" cols="25">{{
-        todo.description
-      }}</textarea>
-    </p>
-    <p>
-      <input type="submit" value="Update Todo">
-    </p>
+      </ul>
+      {% endif %}
+    </div>
+    <div class="uk-margin">
+      <button class="uk-button uk-button-default">Update</button>
+    </div>
   </form>
+
   <form action="/todo/{{todo.id}}" method="post">
     <input type="hidden" name="_method" value="delete">
-    <p><input type="submit" value="Delete Todo"></p>
+    <div class="uk-margin">
+      <button class="uk-button uk-button-default">Delete Task</button>
+    </div>
   </form>
-</div>
 
-<div>
-  <a href="/todolist">back to list</a>
+  <div class="uk-container">
+    <a class="uk-button uk-button-default" href="/todolist">
+      Back to the Todo List
+    </a>
+  </div>
 </div>
 
 {%- endblock %}
