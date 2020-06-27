@@ -90,7 +90,7 @@
   <form action="/todo/{{todo.id}}" method="post">
     <input type="hidden" name="_method" value="delete">
     <div class="uk-margin">
-      <button class="uk-button uk-button-default">Delete Task</button>
+      <button class="uk-button uk-button-default" onclick="return confirm('Really?');">Delete Task</button>
     </div>
   </form>
 

@@ -83,7 +83,7 @@
     <form action="/user/{{user.id}}" method="post">
       <input type="hidden" name="_method" value="delete">
       <div class="uk-margin">
-        <button class="uk-button uk-button-default">Delete User</button>
+        <button class="uk-button uk-button-default" onclick="return confirm('Really?');">Delete User</button>
       </div>
     </form>
   </div>
