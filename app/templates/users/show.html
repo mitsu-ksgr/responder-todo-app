@@ -51,7 +51,8 @@
       <div class="uk-margin">
         <label for="location" class="uk-form-label">Location</label>
         <div class="uk-form-controls">
-          <input type="text" name="location" value="{{ user.location if user.location }}"
+          <input type="text" name="location" id="location"
+            value="{{ user.location if user.location }}"
             placeholder="city, country" class="uk-input">
         </div>
       </div>
@@ -60,7 +61,8 @@
         <label for="profile" class="uk-form-label">Profile</label>
         <div class="uk-form-controls">
           <textarea
-            name="profile" rows="4" class="uk-textarea"
+            name="profile" id="profile"
+            rows="4" class="uk-textarea"
             >{{ user.profile if user.profile }}</textarea>
         </div>
       </div>
