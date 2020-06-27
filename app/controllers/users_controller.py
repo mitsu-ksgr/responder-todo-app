@@ -62,17 +62,17 @@ class UserController:
         params = await req.media()
         if "_method" in params:
             if params["_method"] == "patch":
-                self.on_patch(req, resp, session, user, params)
+                self.on_patch(req, resp, session, me, user, params)
             elif params["_method"] == "delete":
                 self.on_delete(req, resp, session, user)
         session.close()
 
-    def on_patch(self, req, resp, db_session, user, params):
+    def on_patch(self, req, resp, db_session, me, user, params):
         validator = UserValidator("update", params)
         if not validator.valid:
             resp.status_code = 422
             resp.html = render_template(
-                resp, "users/show.html", user=user, messages=validator.messages
+                resp, "users/show.html", user=user, me=me, messages=validator.messages
             )
             return
 
