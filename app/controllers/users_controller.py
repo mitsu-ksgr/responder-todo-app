@@ -15,6 +15,7 @@ class UsersController:
     async def on_get(self, req, resp):
         session = db_helper.session()
         users = session.query(User).all()
+        resp.status_code = 200
         resp.html = render_template(resp, "users/index.html", users=users)
 
 
@@ -30,7 +31,6 @@ class UserController:
             user = None
 
         me = current_user(resp, session)
-
         if user:
             resp.status_code = 200
             resp.html = render_template(resp, "users/show.html", user=user, me=me)
