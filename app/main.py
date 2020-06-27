@@ -26,7 +26,9 @@ api = responder.API(
 
 @api.route("/")
 def root_path(req, resp):
-    resp.html = api.template("index.html")
+    from app.helpers.api_helper import render_template
+
+    resp.html = render_template(resp, "index.html")
 
 
 # Sessions
