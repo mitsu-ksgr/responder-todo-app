@@ -1,35 +1,46 @@
 {%- extends "layout.html" %}
 {%- block content %}
 
-<h3>Sign in</h3>
+<h3>Sign Up</h3>
 
 <div>
-  {% if messages|length > 0 %}
-  <h4>Errors</h4>
-  <ul>
-    {% for msg in messages %}
-    <li>{{ msg }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
 
-  <form action="/join" method="post">
-    <p>
-      <label for="name">Username:</label><br>
-      <input type="text" name="name" id="name">
-    </p>
-    <p>
-      <label for="email">Email address:</label><br>
-      <input type="email" name="email" id="email">
-    </p>
-    <p>
-      <label for="password">Password:</label><br>
-      <input type="password" name="password" id="password">
-    </p>
-    <p>
-      <input type="submit" value="Create Account">
-    </p>
-  </form>
+  <div class="uk-container">
+    <form action="/join" method="post" class="uk-form-horizontal">
+      <div class="uk-margin">
+        <label for="name" class="uk-form-label">Username</label>
+        <div class="uk-form-controls">
+          <input type="text" name="name" id="name"
+            placeholder="your name" class="uk-input">
+        </div>
+      </div>
+      <div class="uk-margin">
+        <label for="email" class="uk-form-label">Email address</label>
+        <div class="uk-form-controls">
+          <input type="email" name="email" id="email"
+            placeholder="foo@example.com" class="uk-input">
+        </div>
+      </div>
+      <div class="uk-margin">
+        <label for="password" class="uk-form-label">Password</label>
+        <div class="uk-form-controls">
+          <input type="password" name="password" id="password" class="uk-input">
+        </div>
+      </div>
+      <div class="uk-margin">
+        {% if messages|length > 0 %}
+          <ul class="">
+            {% for msg in messages %}
+              <li class="uk-form-danger">{{ msg }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="uk-margin">
+        <button class="uk-button uk-button-default">Create Account</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 {%- endblock %}
