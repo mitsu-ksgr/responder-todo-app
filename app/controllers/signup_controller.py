@@ -16,7 +16,9 @@ class SignupController:
         validator = SignupValidator(params)
         if not validator.valid:
             resp.status_code = 422
-            resp.html = render_template(resp, "signup/join.html", messages=validator.messages)
+            resp.html = render_template(
+                resp, "signup/join.html", messages=validator.messages
+            )
             return
 
         session = db_helper.session()

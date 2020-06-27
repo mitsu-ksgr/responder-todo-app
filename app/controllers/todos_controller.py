@@ -129,7 +129,9 @@ class TodoController:
 
         if todo:
             resp.status_code = 200
-            resp.html = _render_todo_template(resp, "todos/show.html", user=me, todo=todo)
+            resp.html = _render_todo_template(
+                resp, "todos/show.html", user=me, todo=todo
+            )
         else:
             resp.status_code = 404
             resp.html = render_template(resp, "404.html")
