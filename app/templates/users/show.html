@@ -27,6 +27,8 @@
 </div>
 
 {% if me and me.id == user.id %}
+  <hr class="uk-divider-icon">
+
   <div class="uk-container">
     <h3>Edit Profile</h3>
     <form action="/user/{{user.id}}" method="post" class="uk-form-horizontal">
