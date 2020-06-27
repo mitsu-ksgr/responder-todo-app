@@ -40,6 +40,10 @@ def logout(resp):
         del resp.session["user_id"]
 
 
+def is_logged_in(resp):
+    return "user_id" in resp.session
+
+
 def current_user(resp, db_session):
     if "user_id" not in resp.session:
         return None

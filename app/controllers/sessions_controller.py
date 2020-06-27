@@ -13,21 +13,21 @@ class LogoutController:
 
 class LoginController:
     async def on_get(self, req, resp):
-        resp.html = render_template("sessions/new.html")
+        resp.html = render_template(resp, "sessions/new.html")
 
     async def on_post(self, req, resp):
         params = await req.media()
         valid, msg = self._validate(params)
         if not valid:
             resp.status_code = 422
-            resp.html = render_template("sessions/new.html", messages=msg)
+            resp.html = render_template(resp, "sessions/new.html", messages=msg)
             return
 
         is_auth, user = self._authenticate(params["email"], params["password"])
         if not is_auth:
             msg = ["Authentication failed."]
             resp.status_code = 403
-            resp.html = render_template("sessions/new.html", messages=msg)
+            resp.html = render_template(resp, "sessions/new.html", messages=msg)
             return
 
         # Login

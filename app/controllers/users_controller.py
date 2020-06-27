@@ -15,7 +15,7 @@ class UsersController:
     async def on_get(self, req, resp):
         session = db_helper.session()
         users = session.query(User).all()
-        resp.html = render_template("users/index.html", users=users)
+        resp.html = render_template(resp, "users/index.html", users=users)
 
 
 # /user/{idx}
@@ -33,17 +33,17 @@ class UserController:
 
         if user:
             resp.status_code = 200
-            resp.html = render_template("users/show.html", user=user, me=me)
+            resp.html = render_template(resp, "users/show.html", user=user, me=me)
         else:
             resp.status_code = 404
-            resp.html = render_template("404.html")
+            resp.html = render_template(resp, "404.html")
 
     async def on_post(self, req, resp, *, idx):
         session = db_helper.session()
         me = current_user(resp, session)
         if me is None:
             resp.status_code = 401
-            resp.html = render_template("401.html")
+            resp.html = render_template(resp, "401.html")
             session.close()
             return
 
@@ -55,7 +55,7 @@ class UserController:
 
         if user is None or me.id != user.id:
             resp.status_code = 403
-            resp.html = render_template("403.html")
+            resp.html = render_template(resp, "403.html")
             session.close()
             return
 
@@ -72,7 +72,7 @@ class UserController:
         if not validator.valid:
             resp.status_code = 422
             resp.html = render_template(
-                "users/show.html", user=user, messages=validator.messages
+                resp, "users/show.html", user=user, messages=validator.messages
             )
             return
 
@@ -96,10 +96,10 @@ class UserController:
 
         if has_err:
             resp.status_code = 500
-            resp.html = render_template("500.html")
+            resp.html = render_template(resp, "500.html")
         else:
             resp.status_code = 200
-            resp.html = render_template("users/show.html", user=user, me=user)
+            resp.html = render_template(resp, "users/show.html", user=user, me=user)
 
     def on_delete(self, req, resp, db_session, user):
         ok = False
@@ -119,7 +119,7 @@ class UserController:
 
         if ok:
             resp.status_code = 200
-            resp.html = render_template("users/deleted.html")
+            resp.html = render_template(resp, "users/deleted.html")
         else:
             resp.status_code = 500
-            resp.html = render_template("500.html")
+            resp.html = render_template(resp, "500.html")

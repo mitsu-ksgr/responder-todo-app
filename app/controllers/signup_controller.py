@@ -9,14 +9,14 @@ from app.validators.signup_validator import SignupValidator
 
 class SignupController:
     async def on_get(self, req, resp):
-        resp.html = render_template("signup/join.html")
+        resp.html = render_template(resp, "signup/join.html")
 
     async def on_post(self, req, resp):
         params = await req.media()
         validator = SignupValidator(params)
         if not validator.valid:
             resp.status_code = 422
-            resp.html = render_template("signup/join.html", messages=validator.messages)
+            resp.html = render_template(resp, "signup/join.html", messages=validator.messages)
             return
 
         session = db_helper.session()
@@ -44,8 +44,8 @@ class SignupController:
 
         if len(err_msg) > 0:
             resp.status_code = 500
-            resp.html = render_template("signup/join.html", messages=err_msg)
+            resp.html = render_template(resp, "signup/join.html", messages=err_msg)
         else:
             login(resp, user.id)
             resp.status_code = 201
-            resp.html = render_template("signup/registered.html")
+            resp.html = render_template(resp, "signup/registered.html")

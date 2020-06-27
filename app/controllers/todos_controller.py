@@ -23,8 +23,8 @@ from app.models.todo import Todo, TodoStatus
 from app.validators.todo_validator import TodoValidator
 
 
-def _render_todo_template(template_name, **values):
-    template = jinja2_template(template_name)
+def _render_todo_template(resp, template_name, **values):
+    template = jinja2_template(resp, template_name)
     template.globals["TodoStatus"] = TodoStatus
     return template.render(**values)
 
@@ -39,11 +39,11 @@ class TodoListController:
         me = current_user(resp, session)
         if me is None:
             resp.status_code = 401
-            resp.html = render_template("401.html")
+            resp.html = render_template(resp, "401.html")
             session.close()
             return
 
-        resp.html = _render_todo_template("todos/index.html", user=me)
+        resp.html = _render_todo_template(resp, "todos/index.html", user=me)
 
 
 # [GET]     /todo/new
@@ -54,17 +54,17 @@ class NewTodoController:
         me = current_user(resp, session)
         if me is None:
             resp.status_code = 401
-            resp.html = render_template("401.html")
+            resp.html = render_template(resp, "401.html")
             session.close()
             return
-        resp.html = _render_todo_template("todos/new.html", user=me)
+        resp.html = _render_todo_template(resp, "todos/new.html", user=me)
 
     async def on_post(self, req, resp):
         session = db_helper.session()
         me = current_user(resp, session)
         if me is None:
             resp.status_code = 401
-            resp.html = render_template("401.html")
+            resp.html = render_template(resp, "401.html")
             session.close()
             return
 
@@ -73,7 +73,7 @@ class NewTodoController:
         if not validator.valid:
             resp.status_code = 422
             resp.html = _render_todo_template(
-                "todos/new.html", messages=validator.messages
+                resp, "todos/new.html", messages=validator.messages
             )
             session.close()
             return
@@ -107,7 +107,7 @@ class NewTodoController:
             )
         else:
             resp.status_code = 201
-            resp.html = _render_todo_template("todos/index.html", user=me)
+            resp.html = _render_todo_template(resp, "todos/index.html", user=me)
         session.close()
 
 
@@ -118,7 +118,7 @@ class TodoController:
         me = current_user(resp, session)
         if me is None:
             resp.status_code = 401
-            resp.html = render_template("401.html")
+            resp.html = render_template(resp, "401.html")
             session.close()
             return
         try:
@@ -129,17 +129,17 @@ class TodoController:
 
         if todo:
             resp.status_code = 200
-            resp.html = _render_todo_template("todos/show.html", user=me, todo=todo)
+            resp.html = _render_todo_template(resp, "todos/show.html", user=me, todo=todo)
         else:
             resp.status_code = 404
-            resp.html = render_template("404.html")
+            resp.html = render_template(resp, "404.html")
 
     async def on_post(self, req, resp, *, idx):
         session = db_helper.session()
         me = current_user(resp, session)
         if me is None:
             resp.status_code = 401
-            resp.html = render_template("401.html")
+            resp.html = render_template(resp, "401.html")
             session.close()
             return
 
@@ -156,7 +156,7 @@ class TodoController:
 
         if todo is None:
             resp.status_code = 403
-            resp.html = render_template("403.html")
+            resp.html = render_template(resp, "403.html")
             session.close()
             return
 
@@ -174,7 +174,7 @@ class TodoController:
         if not validator.valid:
             resp.status_code = 422
             resp.html = _render_todo_template(
-                "todos/show.html", user=me, todo=todo, messages=validator.messages
+                resp, "todos/show.html", user=me, todo=todo, messages=validator.messages
             )
             db_session.close()
             return
@@ -199,11 +199,11 @@ class TodoController:
 
         if has_err:
             resp.status_code = 500
-            resp.html = render_template("500.html")
+            resp.html = render_template(resp, "500.html")
         else:
             resp.status_code = 200
             resp.html = _render_todo_template(
-                "todos/show.html", user=me, todo=todo, messages=validator.messages
+                resp, "todos/show.html", user=me, todo=todo, messages=validator.messages
             )
         db_session.close()
 
@@ -224,8 +224,8 @@ class TodoController:
 
         if ok:
             resp.status_code = 201
-            resp.html = _render_todo_template("todos/index.html", user=me)
+            resp.html = _render_todo_template(resp, "todos/index.html", user=me)
         else:
             resp.status_code = 500
-            resp.html = render_template("500.html")
+            resp.html = render_template(resp, "500.html")
         db_session.close()
