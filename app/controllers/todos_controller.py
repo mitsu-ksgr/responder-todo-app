@@ -103,7 +103,7 @@ class NewTodoController:
         if len(err_msg) > 0:
             resp.status_code = 500
             resp.html = _render_todo_template(
-                "todos/new.html", messages=validator.messages
+                resp, "todos/new.html", messages=validator.messages
             )
         else:
             resp.status_code = 201
