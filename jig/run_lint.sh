@@ -14,7 +14,7 @@ docker-compose exec web pipenv run flake8 --exit-zero\
 
 echo "----- Format with black -----"
 docker-compose exec web pipenv run black \
-    app/*.py app/*/*.py\
+    app/*.py app/*/*.py \
     config/*.py \
     tests/*.py tests/*/*.py
 
