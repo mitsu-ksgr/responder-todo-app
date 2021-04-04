@@ -88,7 +88,13 @@ def current_user():
         location=f"{fake.city()} {fake.country()}",
         profile=fake.paragraph(),
     )
-    user.todos.append(Todo(title="Test Todo", status="none", description="test todo",))
+    user.todos.append(
+        Todo(
+            title="Test Todo",
+            status="none",
+            description="test todo",
+        )
+    )
 
     session = db_helper.session()
     session.add(user)

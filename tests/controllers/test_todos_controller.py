@@ -168,7 +168,7 @@ def test_delete_todo(api, db_session, current_user):
 
 
 def test_delete_user_no_loggin(api, db_session):
-    r = api.requests.post(f"/todo/1", {"_method": "delete"})
+    r = api.requests.post("/todo/1", {"_method": "delete"})
     assert r.status_code == 401
 
 
